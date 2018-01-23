@@ -1,3 +1,7 @@
+// compile: javac Constructors.java
+// run as  java Consructors
+// file has to have the same name as the main class you want to execute?
+
 class A {
     public A( int initValue ) {
         System.out.println( "1" );
