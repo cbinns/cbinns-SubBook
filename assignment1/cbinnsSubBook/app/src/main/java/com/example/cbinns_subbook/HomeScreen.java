@@ -16,13 +16,14 @@ public class HomeScreen extends AppCompatActivity {
         setContentView(R.layout.home_screen);
 
         Button addButton = (Button) findViewById(R.id.add_sub_button);
-
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 launchAddScreen();
             }
         });
+
+
     }
 
     private void launchAddScreen() {

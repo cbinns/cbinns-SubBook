@@ -1,10 +1,5 @@
 package com.example.cbinns_subbook;
 
-import android.util.Log;
-
-import com.example.cbinns_subbook.CommentTooLongException;
-import com.example.cbinns_subbook.NameTooLongException;
-
 import java.util.Date;
 
 /**
@@ -13,34 +8,33 @@ import java.util.Date;
 
 public class Subscription {
     private String name;
-    private Date date;            // want to be able to set as past date?
-    private double charge;           // in CAD, non neg
+    private String date;            // want to be able to set as past date?
+    private String charge;           // in CAD, non neg
     private String comment;
+    private Boolean doneFlag;
 
-    public Subscription(String name, Date date, double charge) {
-        this.name=name;
-        this.date = date;
-        this.charge = charge;
+    public Subscription() {
+        this.doneFlag=Boolean.FALSE;
     }
 
-    public Subscription(String name, Date date, double charge, String comment) {
+    public Subscription(String name, String date, String charge, String comment) {
         this.name=name;
         this.comment=comment;
         this.date = date;
         this.charge = charge;
     }
 
-    public void setName(String name) throws NameTooLongException{
-        if (name.length() < 20){
+    public void setName(String name) throws NameException {
+        if (name.length() < 20 && name.length()>0 ){
             this.name = name;
         }
         else{
-            throw new NameTooLongException();
+            throw new NameException();
         }
     }
 
     public void setComment(String comment) throws CommentTooLongException{
-        if (comment.length() < 30){
+        if (comment.length() < 30 ){
             this.comment = comment;
         }
         else{
@@ -48,8 +42,35 @@ public class Subscription {
         }
     }
 
+    public void setDate(String  date) {
+        this.date = date;
+    }
 
+    public void setCharge(String charge) {
+        this.charge = charge;
+    }
 
+    public void setDone(Boolean done) {
+        this.doneFlag = done;
+    }
 
+    public String getName() {
+        return name;
+    }
 
+    public String getDate() {
+        return date;
+    }
+
+    public String getCharge() {
+        return charge;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public Boolean isDone() {
+        return doneFlag;
+    }
 }
