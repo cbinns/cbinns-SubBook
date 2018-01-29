@@ -3,7 +3,6 @@ package com.example.cbinns_subbook;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -32,8 +31,8 @@ public class AddSubActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_sub);
 
         // find the fields
-        nameText = (EditText) findViewById(R.id.nameText);
-        chargeText = (EditText) findViewById(R.id.chargeText);
+        nameText = (EditText) findViewById(R.id.listNameText);
+        chargeText = (EditText) findViewById(R.id.listChargeText);
         datePicker = (DatePicker) findViewById(R.id.datePicker);
         commentText = (EditText) findViewById(R.id.commentText);
 
@@ -104,6 +103,7 @@ public class AddSubActivity extends AppCompatActivity {
 
                 if (sub.isDone()){
                     // add the subscription to the list and return to home screen
+
                     finish();
                 }
 
