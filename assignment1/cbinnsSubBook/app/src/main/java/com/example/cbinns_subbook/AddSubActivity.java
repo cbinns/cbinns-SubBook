@@ -1,6 +1,7 @@
 package com.example.cbinns_subbook;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -45,7 +46,7 @@ public class AddSubActivity extends AppCompatActivity {
                 // create new sub object here and set attributes
                 // do try catch to limit length of text fields and monetary value
 
-                Subscription sub = new Subscription();
+                Subscription newSubscription = new Subscription();
                 String name = nameText.getText().toString();
                 String charge = chargeText.getText().toString();
                 String comment = commentText.getText().toString();
@@ -53,7 +54,7 @@ public class AddSubActivity extends AppCompatActivity {
                 // get date out of date picker
 
 
-                Calendar cal= Calendar.getInstance();
+                Calendar cal = Calendar.getInstance();
                 cal.set(Calendar.YEAR, datePicker.getYear());
                 cal.set(Calendar.MONTH, datePicker.getMonth());
                 cal.set(Calendar.DATE, datePicker.getDayOfMonth());
@@ -62,10 +63,10 @@ public class AddSubActivity extends AppCompatActivity {
                 // TODO: cant be in the future?
                 date=cal.getTime();
 
-                sub.setDate(new SimpleDateFormat("yyyy-MM-dd").format(date));
+                newSubscription.setDate(new SimpleDateFormat("yyyy-MM-dd").format(date));
 
                 try{
-                    sub.setName(name);
+                    newSubscription.setName(name);
                 }catch(Exception e ){
                     Context context = view.getContext();
                     CharSequence text = "Name must be between 0 and 20 characters";
@@ -79,7 +80,7 @@ public class AddSubActivity extends AppCompatActivity {
                     Double chargeDouble = Double.parseDouble(charge);
                     NumberFormat formatter = NumberFormat.getCurrencyInstance();
                     String money = formatter.format(chargeDouble);
-                    sub.setCharge(money);
+                    newSubscription.setCharge(money);
                 }catch(Exception e){
                     Context context = view.getContext();
                     CharSequence text = "Must enter a charge";
@@ -90,8 +91,8 @@ public class AddSubActivity extends AppCompatActivity {
 
                 // set comment, may be null ---------
                 try{
-                    sub.setComment(comment);
-                    sub.setDone(Boolean.TRUE);
+                    newSubscription.setComment(comment);
+                    newSubscription.setDone(Boolean.TRUE);
                 }catch(Exception e){
                     Context context = view.getContext();
                     CharSequence text = "Comment must be less than 30 characters";
@@ -101,8 +102,13 @@ public class AddSubActivity extends AppCompatActivity {
                 }
 
 
-                if (sub.isDone()){
+                if (newSubscription.isDone()){
                     // add the subscription to the list and return to home screen
+                    Context context = view.getContext();
+                    CharSequence text = "Subscription Created";
+                    int duration = Toast.LENGTH_LONG;
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
 
                     finish();
                 }

@@ -17,11 +17,21 @@ public class Subscription {
         this.doneFlag=Boolean.FALSE;
     }
 
+
+    /**
+     * This Subscription constructor does no length checking
+     *
+     * @param name
+     * @param date
+     * @param charge
+     * @param comment
+     */
     public Subscription(String name, String date, String charge, String comment) {
         this.name=name;
         this.comment=comment;
         this.date = date;
         this.charge = charge;
+        this.doneFlag=Boolean.TRUE;
     }
 
     public void setName(String name) throws NameException {
@@ -72,5 +82,9 @@ public class Subscription {
 
     public Boolean isDone() {
         return doneFlag;
+    }
+
+    public String toString() {
+        return date.toString() + " | " + name;
     }
 }
