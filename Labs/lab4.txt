@@ -1,0 +1,22 @@
+java code conventions
+- no underscores in variable names
+
+package names
+-start w com
+- all lowercase
+
+classes and interfaces
+- should be nouns
+- in camel case, w/ first letter Capitalized
+- use full words
+
+methods
+- verbs
+- mixed camel case w/ first lower case
+
+constants:
+- all caps, seperate words by _
+
+javadoc
+- @ param for every parameter in your methods
+

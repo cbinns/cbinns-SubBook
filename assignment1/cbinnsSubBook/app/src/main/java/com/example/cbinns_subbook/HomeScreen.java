@@ -16,10 +16,14 @@ public class HomeScreen extends AppCompatActivity {
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_screen);
+
+        ListView listView = (ListView) findViewById(R.id.listView);
+        listFeedAdapter = new SubscriptionListAdapter(this, R.id.listView);
 
         Button addButton = (Button) findViewById(R.id.add_sub_button);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -29,8 +33,7 @@ public class HomeScreen extends AppCompatActivity {
             }
         });
 
-        ListView listView = (ListView) findViewById(R.id.listView);
-        listFeedAdapter = new SubscriptionListAdapter(this, R.id.listView);
+
 
         listView.setAdapter(listFeedAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
