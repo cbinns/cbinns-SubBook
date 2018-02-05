@@ -1,3 +1,21 @@
+/*
+ * Copyright (c)  2018 Carolyn Binns
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 package com.example.cbinns_subbook;
 
 import android.content.Context;
@@ -6,7 +24,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -14,7 +31,6 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import java.awt.font.NumericShaper;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -28,53 +44,42 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 
 
-public class HomeScreen extends AppCompatActivity {
+public class HomeScreenActivity extends AppCompatActivity {
     private ListView oldSubscriptionsList;
     private SubscriptionListAdapter adapter;
     private ArrayList<Subscription> subscriptionsList;
     private static final String FILENAME="subscriptions.sav";
     private TextView textTotalCharge;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home_screen);
+        setContentView(R.layout.activity_home_screen);
 
         textTotalCharge = (TextView) findViewById(R.id.chargeTotalText);
 
         oldSubscriptionsList = (ListView) findViewById(R.id.oldSubscriptionsList);
-
-        //listFeedAdapter = new SubscriptionListAdapter(this, R.id.listView);
-
-
-
-        Button addButton = (Button) findViewById(R.id.add_sub_button);
+        Button addButton = (Button) findViewById(R.id.addSubscriptionButton);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launchAddScreen();            // readd this to go to add new sub activity
+                launchAddScreen();            // read this to go to add new sub activity
                 adapter.notifyDataSetChanged();
                 saveInFile();                 // make persistent
             }
         });
 
         oldSubscriptionsList.setAdapter(adapter);
-
-
         oldSubscriptionsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 launchSubscriptionDetails(i);
-
             }
         });
-
     }
 
     private void launchAddScreen() {
-        startActivity(new Intent(this, AddSubActivity.class));
+        startActivity(new Intent(this, AddSubscriptionActivity.class));
     }
 
     private void launchSubscriptionDetails(int position){
@@ -88,7 +93,6 @@ public class HomeScreen extends AppCompatActivity {
         super.onStart();
         loadFromFile();
         adapter = new SubscriptionListAdapter(this, subscriptionsList);
-        //adapter = new ArrayAdapter<Subscription>(this, R.layout.list_item, subscriptionsList);
         oldSubscriptionsList.setAdapter(adapter);
     }
 
@@ -99,6 +103,7 @@ public class HomeScreen extends AppCompatActivity {
         loadFromFile();
         adapter.notifyDataSetChanged();
 
+        // Calculate and display Total Monthly Charge
         double totalCharge=0;
         for (Subscription subscription: subscriptionsList){
             String valueString = subscription.getCharge().replace("$","");
@@ -106,13 +111,16 @@ public class HomeScreen extends AppCompatActivity {
             totalCharge += value;
         }
 
-
         NumberFormat formatter = NumberFormat.getCurrencyInstance();
         String money = formatter.format(totalCharge);
-
         textTotalCharge.setText("Total charge: "+ money);
     }
 
+    /*
+    Taken with permission from Lonely Twitter for Cmput 301
+    https://github.com/ta301-ks/lonelyTwitter/tree/w18TueLab3
+    2018-02-01
+    */
     private void loadFromFile() {
         try {
             FileInputStream fis = openFileInput(FILENAME);
@@ -132,6 +140,11 @@ public class HomeScreen extends AppCompatActivity {
         }
     }
 
+    /*
+    Taken with permission from Lonely Twitter for Cmput 301
+    https://github.com/ta301-ks/lonelyTwitter/tree/w18TueLab3
+    2018-02-01
+    */
     private void saveInFile() {
         try {
 
@@ -151,5 +164,4 @@ public class HomeScreen extends AppCompatActivity {
             throw new RuntimeException();
         }
     }
-
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.cbinns_subbook.HomeScreen">
+    tools:context="com.example.cbinns_subbook.HomeScreenActivity">
 
 
     <TextView
@@ -26,7 +26,7 @@
         android:layout_height="373dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/add_sub_button"
+        app:layout_constraintBottom_toTopOf="@+id/addSubscriptionButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +35,7 @@
     </ListView>
 
     <Button
-        android:id="@+id/add_sub_button"
+        android:id="@+id/addSubscriptionButton"
         android:layout_width="352dp"
         android:layout_height="44dp"
         android:layout_marginEnd="8dp"
@@ -61,6 +61,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_sub_button" />
+        app:layout_constraintTop_toBottomOf="@+id/addSubscriptionButton" />
 
 </android.support.constraint.ConstraintLayout>

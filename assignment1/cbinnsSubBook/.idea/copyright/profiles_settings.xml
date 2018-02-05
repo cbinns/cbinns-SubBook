@@ -1,0 +1,7 @@
+<component name="CopyrightManager">
+  <settings default="SubBook">
+    <module2copyright>
+      <element module="All" copyright="SubBook" />
+    </module2copyright>
+  </settings>
+</component>
