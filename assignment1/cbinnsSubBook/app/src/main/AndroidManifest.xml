@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddSubActivity" />
-        <activity android:name=".SubscriptionDetailsActivity"></activity>
+        <activity android:name=".SubscriptionDetailsActivity" />
+        <activity android:name=".EditSubscriptionDetailsActivity"></activity>
     </application>
 
 </manifest>

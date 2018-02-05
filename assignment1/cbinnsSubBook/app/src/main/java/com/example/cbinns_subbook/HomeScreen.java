@@ -50,10 +50,10 @@ public class HomeScreen extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                subscriptionsList.clear();
+
                 launchAddScreen();            // readd this to go to add new sub activity
-                Subscription sub = new Subscription("name", "2018-02-01", "14.2","comment");
-                subscriptionsList.add(sub);
+
+
 
                 adapter.notifyDataSetChanged();
 
@@ -64,14 +64,20 @@ public class HomeScreen extends AppCompatActivity {
 
 
         oldSubscriptionsList.setAdapter(listFeedAdapter);
+
+
+
         oldSubscriptionsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Subscription subscription = (Subscription) adapterView.getAdapter().getItem(i);
-                launchSubscriptionDetails(subscription);
+
+
+                //Subscription subscription = (Subscription) adapterView.getAdapter().getItem(i);
+                launchSubscriptionDetails(i);
 
             }
         });
+
     }
 
     private void launchAddScreen() {
@@ -80,12 +86,10 @@ public class HomeScreen extends AppCompatActivity {
 
     }
 
-    private void launchSubscriptionDetails(Subscription subscription){
+    private void launchSubscriptionDetails(int position){
         Intent subscriptionDetailsIntent = new Intent(this, SubscriptionDetailsActivity.class);
-        //subscriptionDetailsIntent.putExtra(SubscriptionDetailsActivity.EXTRA_SUBSCRIPTION, subscription);
+        subscriptionDetailsIntent.putExtra("position", position);
         startActivity(subscriptionDetailsIntent);
-
-        startActivity(new Intent(this, SubscriptionDetailsActivity.class));
 
 
     }
@@ -98,6 +102,14 @@ public class HomeScreen extends AppCompatActivity {
         adapter = new ArrayAdapter<Subscription>(this, R.layout.list_item, subscriptionsList);
         oldSubscriptionsList.setAdapter(adapter);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        loadFromFile();
+        adapter.notifyDataSetChanged();
     }
 
     private void loadFromFile() {

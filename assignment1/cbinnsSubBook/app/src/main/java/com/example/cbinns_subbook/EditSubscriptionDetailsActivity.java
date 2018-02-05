@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -28,63 +30,85 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import static java.lang.String.format;
-
-public class AddSubActivity extends AppCompatActivity {
-    private EditText nameText;
-    private EditText chargeText;
-    private DatePicker datePicker;
-    private Date date;
-    private EditText commentText;
-    private Button createButton;
-    private Button cancelButton;
+public class EditSubscriptionDetailsActivity extends AppCompatActivity {
+    private Button saveButton;
     private ArrayList<Subscription> subscriptionsList;
     private static final String FILENAME="subscriptions.sav";
+    int position;
+    private EditText newName;
+    private EditText newCharge;
+    private DatePicker newDate;
+    private EditText newComment;
+    private Date anotherDate;
+    private Date date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("---","edit on creat ***********************************************************8");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_sub);
+        setContentView(R.layout.activity_edit_subscription_details);
+
+        newName = (EditText) findViewById(R.id.newName);
+        newCharge = (EditText) findViewById(R.id.newCharge);
+        newDate = (DatePicker) findViewById(R.id.newDate);
+        newComment = (EditText) findViewById(R.id.newComment);
 
 
-        // find the fields
-        nameText = (EditText) findViewById(R.id.listNameText);
-        chargeText = (EditText) findViewById(R.id.listChargeText);
-        datePicker = (DatePicker) findViewById(R.id.datePicker);
-        commentText = (EditText) findViewById(R.id.commentText);
+
+        Intent detailsIntent = getIntent();
+        Bundle bundle= detailsIntent.getExtras();
+
+        position = (int) bundle.get("position");
 
         loadFromFile();
+        final Subscription subscription = subscriptionsList.get(position);
 
 
-        // -------------------------------------------------------------------- adding a sub
-        createButton = (Button) findViewById(R.id.createButton);
-        createButton.setOnClickListener(new View.OnClickListener() {
+        newName.setText(subscription.getName());
+        newCharge.setText(subscription.getCharge());
+        newComment.setText(subscription.getComment());
+
+        try {
+            this.date = new SimpleDateFormat("yyyy-MM-dd").parse(subscription.getDate());
+        }catch (java.text.ParseException e){
+            this.date = new Date();
+        }
+
+        int year = date.getYear();
+        int month = date.getMonth();
+        int day = date.getDay();
+
+        newDate.updateDate(year, month, day);
+
+
+
+
+
+        Button saveButton = (Button) findViewById(R.id.saveButton);
+        saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // create new sub object here and set attributes
-                // do try catch to limit length of text fields and monetary value
 
-                Subscription newSubscription = new Subscription();
-                String name = nameText.getText().toString();
-                String charge = chargeText.getText().toString();
-                String comment = commentText.getText().toString();
 
-                // get date out of date picker
+                String name = newName.getText().toString();
+                String charge = newCharge.getText().toString().replaceAll("$","");
+                String comment = newComment.getText().toString();
 
 
                 Calendar cal = Calendar.getInstance();
-                cal.set(Calendar.YEAR, datePicker.getYear());
-                cal.set(Calendar.MONTH, datePicker.getMonth());
-                cal.set(Calendar.DATE, datePicker.getDayOfMonth());
+                cal.set(Calendar.YEAR, newDate.getYear());
+                cal.set(Calendar.MONTH, newDate.getMonth());
+                cal.set(Calendar.DATE, newDate.getDayOfMonth());
 
                 // set date -----------
                 // TODO: cant be in the future?
-                date=cal.getTime();
+                anotherDate=cal.getTime();
 
-                newSubscription.setDate(new SimpleDateFormat("yyyy-MM-dd").format(date));
+                subscription.setDate(new SimpleDateFormat("yyyy-MM-dd").format(anotherDate));
+
 
                 try{
-                    newSubscription.setName(name);
+                    subscription.setName(name);
                 }catch(Exception e ){
                     Context context = view.getContext();
                     CharSequence text = "Name must be between 0 and 20 characters";
@@ -95,11 +119,11 @@ public class AddSubActivity extends AppCompatActivity {
 
                 // set monthly charge, rounds to 2 decimal points
                 try {
+
                     Double chargeDouble = Double.parseDouble(charge);
                     NumberFormat formatter = NumberFormat.getCurrencyInstance();
                     String money = formatter.format(chargeDouble);
-                    newSubscription.setCharge(money);
-                    newSubscription.setDone(Boolean.TRUE);
+                    subscription.setCharge(money);
                 }catch(Exception e){
                     Context context = view.getContext();
                     CharSequence text = "Must enter a charge";
@@ -110,7 +134,7 @@ public class AddSubActivity extends AppCompatActivity {
 
                 // set comment, may be null ---------
                 try{
-                    newSubscription.setComment(comment);
+                    subscription.setComment(comment);
 
                 }catch(Exception e){
                     Context context = view.getContext();
@@ -128,7 +152,6 @@ public class AddSubActivity extends AppCompatActivity {
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
 
-                    subscriptionsList.add(newSubscription);
                     saveInFile();
                     finish();
 
@@ -143,29 +166,13 @@ public class AddSubActivity extends AppCompatActivity {
 
 
 
-            }
-        });
-
-
-        // cancelling a sub -------------------------------------------------------------------
-        cancelButton = (Button) findViewById(R.id.cancelButton);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // create new sub object here and set attributes
-                // do try catch to limit length of text fields and monetary value
-                Context context = view.getContext();
-                CharSequence text = "Aborted";
-                int duration = Toast.LENGTH_SHORT;
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
-                finish();
 
             }
         });
-
 
     }
+
+
 
     private void loadFromFile() {
         try {
