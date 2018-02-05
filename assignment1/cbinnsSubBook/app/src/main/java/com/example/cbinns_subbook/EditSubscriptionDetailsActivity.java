@@ -37,7 +37,7 @@ public class EditSubscriptionDetailsActivity extends AppCompatActivity {
     int position;
     private EditText newName;
     private EditText newCharge;
-    private DatePicker newDate;
+    private DatePicker newDatePicker;
     private EditText newComment;
     private Date anotherDate;
     private Date date;
@@ -50,7 +50,7 @@ public class EditSubscriptionDetailsActivity extends AppCompatActivity {
 
         newName = (EditText) findViewById(R.id.newName);
         newCharge = (EditText) findViewById(R.id.newCharge);
-        newDate = (DatePicker) findViewById(R.id.newDate);
+        newDatePicker = (DatePicker) findViewById(R.id.newDate);
         newComment = (EditText) findViewById(R.id.newComment);
 
 
@@ -65,8 +65,9 @@ public class EditSubscriptionDetailsActivity extends AppCompatActivity {
 
 
         newName.setText(subscription.getName());
-        newCharge.setText(subscription.getCharge());
+        newCharge.setText(subscription.getCharge().replace('$',' '));
         newComment.setText(subscription.getComment());
+
 
         try {
             this.date = new SimpleDateFormat("yyyy-MM-dd").parse(subscription.getDate());
@@ -74,16 +75,14 @@ public class EditSubscriptionDetailsActivity extends AppCompatActivity {
             this.date = new Date();
         }
 
-        int year = date.getYear();
-        int month = date.getMonth();
-        int day = date.getDay();
 
-        newDate.updateDate(year, month, day);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(this.date);
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
 
-
-
-
-
+        newDatePicker.updateDate(year, month, day);
 
         Button saveButton = (Button) findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -92,14 +91,16 @@ public class EditSubscriptionDetailsActivity extends AppCompatActivity {
 
 
                 String name = newName.getText().toString();
-                String charge = newCharge.getText().toString();   //.replaceAll("$","");
+                String charge = newCharge.getText().toString();
                 String comment = newComment.getText().toString();
+
+                Log.i("-------new charge:-", charge);
 
 
                 Calendar cal = Calendar.getInstance();
-                cal.set(Calendar.YEAR, newDate.getYear());
-                cal.set(Calendar.MONTH, newDate.getMonth());
-                cal.set(Calendar.DATE, newDate.getDayOfMonth());
+                cal.set(Calendar.YEAR, newDatePicker.getYear());
+                cal.set(Calendar.MONTH, newDatePicker.getMonth());
+                cal.set(Calendar.DATE, newDatePicker.getDayOfMonth());
 
                 // set date -----------
                 // TODO: cant be in the future?
@@ -107,7 +108,6 @@ public class EditSubscriptionDetailsActivity extends AppCompatActivity {
 
                 subscription.setDate(new SimpleDateFormat("yyyy-MM-dd").format(anotherDate));
                 Log.i("------------", subscription.getDate());
-
 
                 try{
                     subscription.setName(name);
@@ -121,12 +121,12 @@ public class EditSubscriptionDetailsActivity extends AppCompatActivity {
 
                 // set monthly charge, rounds to 2 decimal points
                 try {
-
                     Double chargeDouble = Double.parseDouble(charge);
                     NumberFormat formatter = NumberFormat.getCurrencyInstance();
                     String money = formatter.format(chargeDouble);
                     subscription.setCharge(money);
                 }catch(Exception e){
+                    Log.i("exception", e.toString());
                     Context context = view.getContext();
                     CharSequence text = "Must enter a charge";
                     int duration = Toast.LENGTH_LONG;

@@ -54,29 +54,18 @@ public class HomeScreen extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 launchAddScreen();            // readd this to go to add new sub activity
-
-
-
                 adapter.notifyDataSetChanged();
-
                 saveInFile();                 // make persistent
             }
         });
 
-
-
         oldSubscriptionsList.setAdapter(adapter);
-
 
 
         oldSubscriptionsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-
-                //Subscription subscription = (Subscription) adapterView.getAdapter().getItem(i);
                 launchSubscriptionDetails(i);
 
             }
@@ -85,28 +74,22 @@ public class HomeScreen extends AppCompatActivity {
     }
 
     private void launchAddScreen() {
-
         startActivity(new Intent(this, AddSubActivity.class));
-
     }
 
     private void launchSubscriptionDetails(int position){
         Intent subscriptionDetailsIntent = new Intent(this, SubscriptionDetailsActivity.class);
         subscriptionDetailsIntent.putExtra("position", position);
         startActivity(subscriptionDetailsIntent);
-
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
         loadFromFile();
         adapter = new SubscriptionListAdapter(this, subscriptionsList);
         //adapter = new ArrayAdapter<Subscription>(this, R.layout.list_item, subscriptionsList);
         oldSubscriptionsList.setAdapter(adapter);
-
     }
 
     @Override
@@ -116,22 +99,14 @@ public class HomeScreen extends AppCompatActivity {
         loadFromFile();
         adapter.notifyDataSetChanged();
 
-        long totalCharge=0;
-
+        double totalCharge=0.00;
         for (Subscription subscription: subscriptionsList){
-            NumberFormat format = NumberFormat.getCurrencyInstance();
-
-            try {
-
-
-                long value = (long) format.parse(subscription.getCharge());
-                totalCharge += value;
-            } catch (java.text.ParseException e) {
-
-            }
+            String valueString = subscription.getCharge().replace("$","");
+            double value =  Double.parseDouble(valueString);
+            totalCharge += value;
         }
 
-        textTotalCharge.setText("Total charge: $"+ Long.toString(totalCharge));
+        textTotalCharge.setText("Total charge: $"+ Double.toString(totalCharge));
     }
 
     private void loadFromFile() {
