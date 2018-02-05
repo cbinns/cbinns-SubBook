@@ -84,6 +84,7 @@ public class EditSubscriptionDetailsActivity extends AppCompatActivity {
 
 
 
+
         Button saveButton = (Button) findViewById(R.id.saveButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +92,7 @@ public class EditSubscriptionDetailsActivity extends AppCompatActivity {
 
 
                 String name = newName.getText().toString();
-                String charge = newCharge.getText().toString().replaceAll("$","");
+                String charge = newCharge.getText().toString();   //.replaceAll("$","");
                 String comment = newComment.getText().toString();
 
 
@@ -105,6 +106,7 @@ public class EditSubscriptionDetailsActivity extends AppCompatActivity {
                 anotherDate=cal.getTime();
 
                 subscription.setDate(new SimpleDateFormat("yyyy-MM-dd").format(anotherDate));
+                Log.i("------------", subscription.getDate());
 
 
                 try{

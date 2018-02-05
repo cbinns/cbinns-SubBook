@@ -9,10 +9,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.awt.font.NumericShaper;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
@@ -22,15 +24,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 
 public class HomeScreen extends AppCompatActivity {
     private ListView oldSubscriptionsList;
-    private SubscriptionListAdapter listFeedAdapter;
-    private ArrayAdapter<Subscription> adapter;
+    private SubscriptionListAdapter adapter;
     private ArrayList<Subscription> subscriptionsList;
     private static final String FILENAME="subscriptions.sav";
+    private TextView textTotalCharge;
 
 
 
@@ -39,6 +42,7 @@ public class HomeScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_screen);
 
+        textTotalCharge = (TextView) findViewById(R.id.chargeTotalText);
 
         oldSubscriptionsList = (ListView) findViewById(R.id.oldSubscriptionsList);
 
@@ -63,7 +67,7 @@ public class HomeScreen extends AppCompatActivity {
 
 
 
-        oldSubscriptionsList.setAdapter(listFeedAdapter);
+        oldSubscriptionsList.setAdapter(adapter);
 
 
 
@@ -99,7 +103,8 @@ public class HomeScreen extends AppCompatActivity {
         super.onStart();
 
         loadFromFile();
-        adapter = new ArrayAdapter<Subscription>(this, R.layout.list_item, subscriptionsList);
+        adapter = new SubscriptionListAdapter(this, subscriptionsList);
+        //adapter = new ArrayAdapter<Subscription>(this, R.layout.list_item, subscriptionsList);
         oldSubscriptionsList.setAdapter(adapter);
 
     }
@@ -110,6 +115,23 @@ public class HomeScreen extends AppCompatActivity {
 
         loadFromFile();
         adapter.notifyDataSetChanged();
+
+        long totalCharge=0;
+
+        for (Subscription subscription: subscriptionsList){
+            NumberFormat format = NumberFormat.getCurrencyInstance();
+
+            try {
+
+
+                long value = (long) format.parse(subscription.getCharge());
+                totalCharge += value;
+            } catch (java.text.ParseException e) {
+
+            }
+        }
+
+        textTotalCharge.setText("Total charge: $"+ Long.toString(totalCharge));
     }
 
     private void loadFromFile() {

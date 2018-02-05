@@ -9,37 +9,39 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 /**
  * Created by Abinsi on 1/28/2018.
  */
 
 public class SubscriptionListAdapter extends ArrayAdapter<Subscription> {
-    public SubscriptionListAdapter(@NonNull Context context, int resource) {
-        super(context, resource);
+    public SubscriptionListAdapter(Context context, ArrayList<Subscription> subscriptions) {
+        super(context,0, subscriptions);
+
     }
 
-    @NonNull
-    @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View listItemView = getListItemView(convertView, parent);
-        TextView nameTextView = (TextView) listItemView.findViewById(R.id.listNameText);
-        TextView dateTextView = (TextView) listItemView.findViewById(R.id.listDateText);
-        TextView chargeTextView = (TextView) listItemView.findViewById(R.id.listChargeText);
 
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        // Get the data item for this position
         Subscription subscription = getItem(position);
+        // Check if an existing view is being reused, otherwise inflate the view
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_subscriptions, parent, false);
+        }
+        // Lookup view for data population
+        TextView nameTextView = (TextView) convertView.findViewById(R.id.listNameText);
+        TextView dateTextView = (TextView) convertView.findViewById(R.id.listDateText);
+        TextView chargeTextView = (TextView) convertView.findViewById(R.id.listChargeText);
+
         nameTextView.setText(subscription.getName());
         dateTextView.setText(subscription.getDate());
         chargeTextView.setText(subscription.getCharge());
 
-        return listItemView;
 
+        return convertView;
     }
 
-    private View getListItemView(@Nullable View convertView, @NonNull ViewGroup parent) {
-        if (convertView != null) {
-            return convertView;
-        }
-        return LayoutInflater.from(getContext()).inflate(R.layout.list_item_subscriptions, parent, false);
-    }
 
 }
