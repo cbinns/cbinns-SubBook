@@ -99,14 +99,18 @@ public class HomeScreen extends AppCompatActivity {
         loadFromFile();
         adapter.notifyDataSetChanged();
 
-        double totalCharge=0.00;
+        double totalCharge=0;
         for (Subscription subscription: subscriptionsList){
             String valueString = subscription.getCharge().replace("$","");
             double value =  Double.parseDouble(valueString);
             totalCharge += value;
         }
 
-        textTotalCharge.setText("Total charge: $"+ Double.toString(totalCharge));
+
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        String money = formatter.format(totalCharge);
+
+        textTotalCharge.setText("Total charge: "+ money);
     }
 
     private void loadFromFile() {

@@ -126,7 +126,6 @@ public class EditSubscriptionDetailsActivity extends AppCompatActivity {
                     String money = formatter.format(chargeDouble);
                     subscription.setCharge(money);
                 }catch(Exception e){
-                    Log.i("exception", e.toString());
                     Context context = view.getContext();
                     CharSequence text = "Must enter a charge";
                     int duration = Toast.LENGTH_LONG;
@@ -149,7 +148,7 @@ public class EditSubscriptionDetailsActivity extends AppCompatActivity {
                 if (!name.equals("") && !charge.equals("") && !name.replaceAll("\\s+","").equals("")) {
                     // add the subscription to the list and return to home screen
                     Context context = view.getContext();
-                    CharSequence text = "Subscription Created";
+                    CharSequence text = "Changes saved";
                     int duration = Toast.LENGTH_LONG;
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();

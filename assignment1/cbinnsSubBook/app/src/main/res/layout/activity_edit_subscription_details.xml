@@ -28,33 +28,38 @@
                 android:id="@+id/editNameLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Name *" />
+                android:text="Name *"
+                android:textColor="@android:color/background_dark" />
 
             <EditText
                 android:id="@+id/newName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:textColor="@android:color/background_dark" />
 
             <TextView
                 android:id="@+id/editChargeLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Charge *" />
+                android:text="Charge *"
+                android:textColor="@android:color/background_dark" />
 
             <EditText
                 android:id="@+id/newCharge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="numberDecimal" />
+                android:inputType="numberDecimal"
+                android:textColor="@android:color/background_dark" />
 
             <TextView
                 android:id="@+id/editDateLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Date *" />
+                android:text="Date *"
+                android:textColor="@android:color/background_dark" />
 
             <DatePicker
                 android:id="@+id/newDate"
@@ -65,20 +70,22 @@
                 android:id="@+id/editCommentLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Comment (optional)" />
+                android:text="Comment (optional)"
+                android:textColor="@android:color/background_dark" />
 
             <EditText
                 android:id="@+id/newComment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:textColor="@android:color/background_dark" />
         </LinearLayout>
     </ScrollView>
 
     <Button
         android:id="@+id/saveButton"
-        android:layout_width="wrap_content"
+        android:layout_width="360dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:text="Save"
